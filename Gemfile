@@ -41,6 +41,10 @@ gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 
+gem 'nested_form'
+gem 'jquery-rails'
+gem 'jquery'
+
 # Devise for user authentication
 gem 'devise'
 

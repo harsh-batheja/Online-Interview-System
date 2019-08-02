@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-
-  resources :answers
 	root "users#index"
   resources :papers do
     resources :questions do 
@@ -13,5 +11,7 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations',
     passwords: 'users/passwords'
   }
-  resources :users, only:[:show]
+  resources :users, only:[:show] do
+    resources :answers
+  end
 end

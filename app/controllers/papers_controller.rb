@@ -11,6 +11,7 @@ class PapersController < ApplicationController
   # GET /papers/1
   # GET /papers/1.json
   def show
+
   end
 
   # GET /papers/new
@@ -70,6 +71,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:name)
+      params.require(:paper).permit(:name,options_attributes:[:id,:answer,:_destroy])
     end
 end
