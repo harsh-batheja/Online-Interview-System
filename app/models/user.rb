@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   #  :lockable, :timeoutable and :omniauthable
+  has_many :answers
+  has_many :questions, through: :answers
+  has_many :papers, through: :questions
+  
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
   def update_with_password(params={})

@@ -10,17 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_31_134116) do
+ActiveRecord::Schema.define(version: 2019_08_09_091659) do
 
-  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "paper_id"
-    t.bigint "question_id"
+  create_table "answer_options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "answer_id"
     t.bigint "option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["option_id"], name: "index_answers_on_option_id"
-    t.index ["paper_id"], name: "index_answers_on_paper_id"
+    t.index ["answer_id"], name: "index_answer_options_on_answer_id"
+    t.index ["option_id"], name: "index_answer_options_on_option_id"
+  end
+
+  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "question_id"
+    t.text "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
@@ -43,11 +49,11 @@ ActiveRecord::Schema.define(version: 2019_07_31_134116) do
 
   create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "question"
-    t.string "type"
+    t.string "qtype"
     t.integer "duration", default: 0
-    t.integer "correct"
-    t.integer "incorrect"
-    t.integer "unattempted"
+    t.integer "correct", default: 1
+    t.integer "incorrect", default: -1
+    t.integer "unattempted", default: 0
     t.bigint "paper_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -78,8 +84,8 @@ ActiveRecord::Schema.define(version: 2019_07_31_134116) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "answers", "options"
-  add_foreign_key "answers", "papers"
+  add_foreign_key "answer_options", "answers"
+  add_foreign_key "answer_options", "options"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "options", "questions"

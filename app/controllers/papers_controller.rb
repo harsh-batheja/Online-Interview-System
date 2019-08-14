@@ -11,7 +11,16 @@ class PapersController < ApplicationController
   # GET /papers/1
   # GET /papers/1.json
   def show
+    if !current_user.admin
+      render :start_test
+    end
+  end
 
+  def start_test
+
+  end
+
+  def submit_test
   end
 
   # GET /papers/new
@@ -71,6 +80,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:name,options_attributes:[:id,:answer,:_destroy])
+      params.require(:paper).permit(:name, questions_attributes:[:id,:question,:qtype,:correct,:incorrect,:unattempted,:hours,:minutes,:seconds,:_destroy, options_attributes:[:id, :is_correct,:answer,:_destroy]])
     end
 end

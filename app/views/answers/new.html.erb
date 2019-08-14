@@ -1,0 +1,21 @@
+<%=form_for @answer,url: paper_answers_path(@paper) do |f|%>
+	<%=f.hidden_field :question_id %>
+	<%=f.label @answer.question.question%>
+	<% @answer.question.options.each do |option| %>
+	<br>
+		<% if @answer.question.qtype == "MAQ" %>
+			<%=check_box_tag "answer[option_ids][]",option.id%>
+		<%else%>
+			<%= radio_button_tag "answer[option_ids][]", option.id, false %>
+		<% end %>
+		<%=f.label option.answer%>
+	<% end %>
+	<br>
+	<%#if answered?(@answer.question_id)%>
+		<%=f.submit :submit,class: "submit btn btn-primary"%>
+	<%#end%>
+<%end%>
+<div> 
+	<!-- style="display:none;"> -->
+	<%=will_paginate @questions%>
+</div>

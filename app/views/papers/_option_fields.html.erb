@@ -1,0 +1,11 @@
+<div class="option form-group col-lg-12">
+	<div class="col-lg-1">
+  	<%= f.check_box  :is_correct, :class => "check_box" %>
+  </div>
+  <div class="col-lg-10">
+    <%= f.text_field :answer, :class => 'option-field form-control'%>
+  </div>
+  <div class="col-lg-1">
+		<%= f.link_to_remove image_tag "x.png", size:"10x10",:class => "option-remove"%>
+	</div>
+</div>

@@ -1,10 +1,16 @@
 class Question < ApplicationRecord
 	belongs_to :paper
-	has_many :options
-	accepts_nested_attributes_for :options
+	has_many :options, dependent: :destroy
+	accepts_nested_attributes_for :options, allow_destroy: true
+	before_save :finalize_question
 	attr_accessor :hours
 	attr_accessor :minutes
 	attr_accessor :seconds
+
+	def answers()
+		options.where("is_correct = ?",true)
+	end
+
 	def initialize(params)
 		super
 		if(params==nil)
@@ -17,6 +23,12 @@ class Question < ApplicationRecord
 		else
 			minutes=params[:hours].to_i*60+params[:minutes].to_i
 			self.duration=minutes*60+params[:seconds].to_i
+		end
+	end
+
+	def finalize_question
+		if(self.qtype=="Fill in the Blank")
+			binding.pry
 		end
 	end
 end
