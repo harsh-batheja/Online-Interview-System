@@ -1,6 +1,8 @@
 class Answer < ApplicationRecord
-  belongs_to :user
+  belongs_to :test
   belongs_to :question
+  has_one :user, through: :test
+  has_one :paper, through: :test
   has_many :answer_options, dependent: :destroy
   has_many :options, through: :answer_options
   accepts_nested_attributes_for :answer_options, allow_destroy: true

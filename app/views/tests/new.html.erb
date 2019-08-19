@@ -1,0 +1,8 @@
+<%- model_class = Test -%>
+<div class="page-header">
+  <h1>Start Test</h1>
+</div>
+<%= form_for @test, :html => { :class => "form-horizontal test" } do |f| %>
+	<%= f.hidden_field :paper_id %>
+	<%= f.submit "Start Test", :class => 'btn btn-primary' %>
+<% end %>

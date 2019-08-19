@@ -1,25 +1,26 @@
 class AnswersController < ApplicationController
-	before_action :set_paper
+	before_action :set_test, only:[:new,:create]
 	
 	def new
-		#binding.pry
-		@questions=@paper.questions.paginate(page:params[:page],per_page: 1)
+		@questions=@test.questions.shuffle
+   if @questions.empty?
+     redirect_to test_submit_path(@test)
+     return 
+   end
 		@answer=Answer.new
 		@answer.question=@questions.first
 	end
 
 	def create
 		answer=Answer.new(answer_params)
-		answer.user=current_user
-		# binding.pry
+		answer.test=@test
 		answer.save
-		redirect_to new_paper_answer_path(@paper)
+		redirect_to new_test_answer_path(@test)
 	end
 
 	private
-
-		def set_paper
-			@paper=Paper.find(params[:paper_id])
+		def set_test
+			@test=Test.find(params[:test_id])
 		end
 
 		def answer_params

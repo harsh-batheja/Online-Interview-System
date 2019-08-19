@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paper: one
+  user: 
+  marks: 1
+
+two:
+  paper: two
+  user: 
+  marks: 1

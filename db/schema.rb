@@ -22,13 +22,13 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
   end
 
   create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "test_id"
     t.bigint "question_id"
     t.text "answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_id"], name: "index_answers_on_user_id"
+    t.index ["test_id"], name: "index_answers_on_test_id"
   end
 
   create_table "options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -60,6 +60,16 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["paper_id"], name: "index_questions_on_paper_id"
   end
 
+  create_table "tests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "paper_id"
+    t.bigint "user_id"
+    t.integer "marks", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["paper_id"], name: "index_tests_on_paper_id"
+    t.index ["user_id"], name: "index_tests_on_user_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "fname", default: "", null: false
     t.string "lname", default: "", null: false
@@ -87,7 +97,9 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
   add_foreign_key "answer_options", "answers"
   add_foreign_key "answer_options", "options"
   add_foreign_key "answers", "questions"
-  add_foreign_key "answers", "users"
+  add_foreign_key "answers", "tests"
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "papers"
+  add_foreign_key "tests", "papers"
+  add_foreign_key "tests", "users"
 end

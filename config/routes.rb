@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
 	root "users#index"
-  #get "test/:id" => "papers#start_test", as: :test
-  resources :papers do
+  resources :tests, except:[:new] do
+    get "/submit" => "tests#submit"
     resources :answers, only:[:new,:create]
+  end
+  resources :papers do
+    resources :tests, only:[:new]
     resources :questions do 
       resources :options
     end

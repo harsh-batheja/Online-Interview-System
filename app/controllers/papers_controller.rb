@@ -11,16 +11,9 @@ class PapersController < ApplicationController
   # GET /papers/1
   # GET /papers/1.json
   def show
-    if !current_user.admin
-      render :start_test
+    unless current_user.admin
+      redirect_to new_paper_test_path(@paper)
     end
-  end
-
-  def start_test
-
-  end
-
-  def submit_test
   end
 
   # GET /papers/new

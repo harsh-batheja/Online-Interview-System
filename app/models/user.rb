@@ -1,9 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   #  :lockable, :timeoutable and :omniauthable
-  has_many :answers
-  has_many :questions, through: :answers
-  has_many :papers, through: :questions
+  has_many :tests
   
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
@@ -45,6 +43,7 @@ class User < ApplicationRecord
     clean_up_passwords
     result
   end
+
   private 
   	def perms(params)
   		params.permit(:current_password,:lname,:fname,:password,:password_confirmation)
