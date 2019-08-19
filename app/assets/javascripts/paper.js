@@ -2,7 +2,7 @@ var option_del = function (option){
 	$(option).find('.option-remove').click();
 }
 var option_undel = function (option){
-	$(option).parents()[0].style.display="";
+	$(option).parents()[0].style.display=""
 	$(option).children().eq(2).children().eq(0).val(false);;
 }
 
