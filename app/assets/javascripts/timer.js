@@ -82,7 +82,6 @@
 
       var clearElement = document.createElement(that._options.elementContainer);
       clearElement.className = that._options.classNameClearDiv;
-
       return timerBoxElement.
         append(hours).
         append(minutes).
@@ -194,6 +193,9 @@
       timeLeft = endTime - this.currentTime();
       // When timer has been idle and only resumed past timeout,
       // then we immediatelly complete the timer.
+      if(timeLeft < 10 ){
+        $(element).css('color', 'red');
+      }
       if(timeLeft < 0 ){
         timeLeft = 0;
       }

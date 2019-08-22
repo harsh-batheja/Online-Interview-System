@@ -1,5 +1,5 @@
 <div class="pull-right">	
-	<h1 class='timer' data-seconds-left = <%= @answer.question.duration%> ></h1>
+	<h3 class='timer' data-seconds-left = <%= @answer.question.duration%> ></h3>
 </div>
 <%=form_for @answer,url: test_answers_path(@test), :method => :post do |f|%>
 	<%=f.hidden_field :question_id %>

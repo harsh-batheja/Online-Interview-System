@@ -1,35 +1,25 @@
-class PapersController < ApplicationController
+class Admin::PapersController < ApplicationController
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
-  before_action :require_admin, except: [:show,:index]
 
-  # GET /papers
-  # GET /papers.json
   def index
     @papers = Paper.all
   end
 
-  # GET /papers/1
-  # GET /papers/1.json
   def show
     unless current_user.admin
       redirect_to new_paper_test_path(@paper)
     end
   end
 
-  # GET /papers/new
   def new
     @paper = Paper.new
   end
 
-  # GET /papers/1/edit
   def edit
   end
 
-  # POST /papers
-  # POST /papers.json
   def create
     @paper = Paper.new(paper_params)
-
     respond_to do |format|
       if @paper.save
         format.html { redirect_to @paper, notice: 'Paper was successfully created.' }
@@ -41,8 +31,6 @@ class PapersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /papers/1
-  # PATCH/PUT /papers/1.json
   def update
     respond_to do |format|
       if @paper.update(paper_params)
@@ -55,8 +43,6 @@ class PapersController < ApplicationController
     end
   end
 
-  # DELETE /papers/1
-  # DELETE /papers/1.json
   def destroy
     @paper.destroy
     respond_to do |format|
@@ -66,12 +52,10 @@ class PapersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_paper
       @paper = Paper.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
       params.require(:paper).permit(:name, questions_attributes:[:id,:question,:qtype,:correct,:incorrect,:unattempted,:hours,:minutes,:seconds,:_destroy, options_attributes:[:id, :is_correct,:answer,:_destroy]])
     end

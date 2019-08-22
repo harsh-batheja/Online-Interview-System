@@ -1,0 +1,52 @@
+<div class="question col-lg-offset-1" >
+  <div class="form-group">
+    <%= f.label :question, :class => 'control-label col-lg-1' %>
+    <div class="col-lg-10">
+      <%= f.text_field :question, :class => 'form-control' %>
+    </div>
+    <%= f.link_to_remove image_tag "x.png", size:"10x10"%>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-2">
+      <%= f.label "Duration(HH/MM/SS)", :class => 'control-label col-lg-2' %>
+    </div>
+    <div class="col-lg-4">
+      <div class="col-lg-4">
+        <%= f.number_field :hours,min:0,placeholder: "HH",:class => 'form-control'%>
+      </div>
+      <div class="col-lg-4">
+        <%= f.number_field :minutes,within:0...60,placeholder: "MM", :class => 'form-control'%>
+      </div>
+      <div class="col-lg-4">
+        <%= f.number_field :seconds,within:0...60,placeholder: "SS", :class => 'form-control'%>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="col-lg-3">
+        <%= f.label :question_type, :class => 'control-label' %>
+      </div>
+      <div class="col-lg-6">
+        <%= f.select(:qtype, q_types,{},{ :class => 'qtype form-control'})%>
+      </div>
+    </div>
+  </div>
+  <%= f.fields_for :options, :html => { :class => "form-horizontal" }%>
+  <div class="form-group">
+    <div class="col-lg-12">
+      <%= f.link_to_add "Add an Option", :options, :class => 'add btn btn-primary'%>
+    </div>
+  </div>
+</div>
+<br><br>
+<script type="text/javascript">
+  $(".question").ready(function(){
+  $.each($(".question"),function(key,question){
+    var qtype=$(this).children().find('.qtype').eq(0).val();
+    if(qtype=="True False"){
+      $.each($(this).find('.option'),function(key,option){
+        lock_option(option);
+      })
+    }
+  })
+})
+</script>

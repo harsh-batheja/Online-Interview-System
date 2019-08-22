@@ -1,20 +1,21 @@
 Rails.application.routes.draw do
-	root "users#index"
-  resources :tests, except:[:new] do
-    get "/submit" => "tests#submit"
-    resources :answers, only:[:new,:create]
-  end
-  resources :papers do
-    resources :tests, only:[:new]
-    resources :questions do 
-      resources :options
-    end
-  end
-  devise_for :users, controllers: {
-    sessions: 'users/sessions',
+	devise_for :users,skip:[:sessions], controllers: {
     registrations: 'users/registrations',
-    confirmations: 'users/confirmations',
-    passwords: 'users/passwords'
   }
-  resources :users, only:[:show]
+  as :user do
+    get 'sign_in', to: 'users/sessions#new', as: :new_user_session
+    post 'sign_in', to: 'users/sessions#create', as: :user_session
+    delete 'sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
+  end
+  authenticated :user do
+      namespace :admin do 
+        resources :tests, except:[:new,:create]
+        resources :papers
+        resources :users, only:[:show]
+        root "users#index"
+      end 
+      resources :tests, except:[:new,:create]
+      resources :users, only:[:show]
+  end
+  root "users#index"
 end

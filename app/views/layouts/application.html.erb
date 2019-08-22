@@ -16,35 +16,6 @@
         </button>
         <a class="navbar-brand" href="/">Interview</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <%if current_user%>
-            <ul class="nav navbar-nav">
-              <li>
-                <%if current_user.admin %>
-                  <%=link_to "Users", root_path, :class => 'navbar-link' %>
-                <%end%>
-              </li>
-              <li>
-                <%=link_to "Papers", papers_path, :class => 'navbar-link' %>
-              </li>
-            </ul>
-          <%end%>
-          <ul class="nav navbar-nav pull-right">
-            <% if user_signed_in? %>
-              <li>
-                <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %>
-              </li>
-              <li>
-                <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-              </li>
-            <% else %>
-              <li>
-                <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %>
-              </li>
-              <li>
-                <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
-              </li>
-            <% end %>
-          </ul>
         </div>
       </div>
     </div>

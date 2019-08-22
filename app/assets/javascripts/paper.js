@@ -21,9 +21,11 @@ var lock_option = function(option){
 var unlock_option = function(option){
 	$(option).find('.option-field').removeAttr("disabled");
 }
-var option1
-var option2
-
+$(document).on('click', '.submit', function() {
+	$.each($(".option"), function(index, option){
+  		unlock_option(option);
+  	});
+})
 $(document).on('click', '.check_box', function() {
 	question = $(this).parents('.fields')[1];
 	qtype = $(question).children().find('.qtype');
@@ -41,6 +43,7 @@ $(document).on('focusin', '.qtype', function(){
 })
 
 $(document).on('change', '.qtype', function(){
+	var button=$(this).parent().parent().parent().parent().parent().find('.add');
 	var prev = $(this).data('val');
   var current = $(this).val();
   var options = $(this).parents('.question').find('.option');
@@ -50,6 +53,7 @@ $(document).on('change', '.qtype', function(){
   if(prev=='True False'){
   	unlock_option(options[0]);
   	unlock_option(options[1]);
+  	button.show();
   }
   if(current=='True False'){
   	option_undel(options[0]);
@@ -58,8 +62,13 @@ $(document).on('change', '.qtype', function(){
   	set_option_value(options[1],"False");
   	lock_option(options[0]);
   	lock_option(options[1]);
+  	button.hide();
   }
   if(current=='MCQ'||current=='MAQ'){
+  	if(prev=='True False'){
+  		var count=$(this).parent().parent().parent().parent().parent().find('.option').length
+  		for (var i=0;i<4-count;i++)button.click();
+  	}
   	$.each(options,function(index,option){
   		option_undel(option);
   	})
@@ -69,9 +78,16 @@ $(document).on('change', '.qtype', function(){
 	$(this).data('val',$(this).val());
 })
 
-$(".option-field").ready(function(){
+$(".question").ready(function(){
 	$.each($(document).find('.option-field'),function(key,option){
-		$(option).data('val',$(this).val());
+		var button=$(this).parent().parent().parent().parent().find('.add');
+		var qtype= $(this).parent().parent().parent().parent().find('.qtype').val();
+		if(qtype!="True False")
+			$(option).data('val',$(this).val());
+		else {
+			$(option).data('val',"");
+			button.hide();
+		}
 	})
 })
 
