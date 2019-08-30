@@ -3,7 +3,11 @@
   	<%= f.check_box  :is_correct, :class => "check_box" %>
   </div>
   <div class="col-lg-10">
+  	<%if f.options[:parent_builder].object.qtype=="True False"%>
+    	<%= f.text_field :answer,:disabled=>true, :class => 'option-field form-control'%>
+    <%else%>
     <%= f.text_field :answer, :class => 'option-field form-control'%>
+    <%end%>
   </div>
   <div class="col-lg-1">
 		<%= f.link_to_remove image_tag "x.png", size:"10x10",:class => "option-remove"%>

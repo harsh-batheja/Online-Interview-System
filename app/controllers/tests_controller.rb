@@ -1,8 +1,8 @@
 class TestsController < ApplicationController
-  before_action :set_test, only: [:show, :edit, :update, :destroy]
+  before_action :set_test, only: [:show, :edit, :update, :destroy,:submit]
 
   def index
-    @tests = Test.all
+    @tests = current_user.tests
   end
 
   def show
@@ -10,10 +10,7 @@ class TestsController < ApplicationController
 
   def new
     @test = Test.new
-    @test.paper_id=params[:paper_id]
-  end
-
-  def edit
+    @test.paper_id=params[:id]
   end
 
   def create
@@ -21,8 +18,9 @@ class TestsController < ApplicationController
     @test.user=current_user
     respond_to do |format|
       if @test.save
-        format.html { redirect_to new_test_answer_path(@test) }
-        format.json { render :show, status: :created, location: @test }
+        session[:test_id]=@test.id
+        format.html { redirect_to answer_path(@test) }
+        format.json { render :show, status: :created, location: [:admin,@test] }
       else
         format.html { render :new }
         format.json { render json: @test.errors, status: :unprocessable_entity }
@@ -30,30 +28,10 @@ class TestsController < ApplicationController
     end
   end
 
-  def update
-    respond_to do |format|
-      if @test.update(test_params)
-        format.html { redirect_to @test, notice: 'Test was successfully updated.' }
-        format.json { render :show, status: :ok, location: @test }
-      else
-        format.html { render :edit }
-        format.json { render json: @test.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def destroy
-    @test.destroy
-    respond_to do |format|
-      format.html { redirect_to tests_url, notice: 'Test was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   def submit
-    @test=Test.find(params[:test_id])
     respond_to do |format|
       if @test.calc_marks
+        session[:test_id]=nil
         format.html { redirect_to @test, notice: 'Your Test has Ended.' }
         format.json { render :show, status: :created, location: @test }
       end

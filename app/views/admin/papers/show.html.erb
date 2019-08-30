@@ -1,20 +1,19 @@
 <%- model_class = Paper -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <center><h1><%= @paper.name %></h1></center>
 </div>
+<br>
+<%@paper.questions.each_with_index do |question,index| %>
+  <%=index+1%>) <%=question.question%><br>
+  <%ch=("a".ord-1).chr%>
+  <%question.options.each do |option| %>
+    &nbsp&nbsp&nbsp<%=ch=ch.next%>) <%=option.answer%>
+    <%if option.is_correct%>✔
+    <%end%><br>
+  <%end%>
+  <br>
+<%end%> 
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @paper.name %></dd>
-</dl>
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              papers_path, :class => 'btn btn-default'  %>
-<%if current_user.admin%>
-	<%= link_to t('.edit', :default => t("helpers.links.edit")),
-	              edit_paper_path(@paper), :class => 'btn btn-default' %>
-	<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              paper_path(@paper),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-<%end%>
+<%=link_to "Back",:back,:class => 'btn btn-default btn-sm-7'%>
+<%= link_to t('.edit', :default => t("helpers.links.edit")), edit_admin_paper_path(@paper), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")), admin_paper_path(@paper), :method => 'delete', :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger' %>

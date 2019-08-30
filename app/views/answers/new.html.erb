@@ -1,7 +1,7 @@
 <div class="pull-right">	
 	<h3 class='timer' data-seconds-left = <%= @answer.question.duration%> ></h3>
 </div>
-<%=form_for @answer,url: test_answers_path(@test), :method => :post do |f|%>
+<%=form_for @answer do |f|%>
 	<%=f.hidden_field :question_id %>
 	<%=f.label @answer.question.question%>
 	<% @answer.question.options.shuffle.each do |option| %>

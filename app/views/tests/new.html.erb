@@ -5,4 +5,5 @@
 <%= form_for @test, :html => { :class => "form-horizontal test" } do |f| %>
 	<%= f.hidden_field :paper_id %>
 	<%= f.submit "Start Test", :class => 'btn btn-primary' %>
+	<%=link_to "Cancel", :back, :class=> 'btn btn-default'%>
 <% end %>

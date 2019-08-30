@@ -1,21 +1,33 @@
 Rails.application.routes.draw do
-	devise_for :users,skip:[:sessions], controllers: {
+	devise_for :users, controllers: {
     registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
-  as :user do
-    get 'sign_in', to: 'users/sessions#new', as: :new_user_session
-    post 'sign_in', to: 'users/sessions#create', as: :user_session
-    delete 'sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
-  end
-  authenticated :user do
+
+  authenticated :user, -> (u) {u.admin} do
+    root "admin/users#index"
       namespace :admin do 
-        resources :tests, except:[:new,:create]
+        resources :tests, except:[:new,:create,:index]
+        resources :users do
+          resources :papers,only: [] do
+            resources :tests, only:[:index]
+          end
+        end 
         resources :papers
-        resources :users, only:[:show]
         root "users#index"
-      end 
-      resources :tests, except:[:new,:create]
-      resources :users, only:[:show]
+      end
   end
-  root "users#index"
+
+  authenticated :user, -> (u) {!u.admin} do
+    get "test/:id"=> "answers#new", as: :answer
+    patch "test/:id" => "answers#update"
+    get "papers/:id/results" => "papers#results",as: :results
+    resources :tests, except:[:destroy,:edit,:new,:update] do 
+      member do
+        get "submit" => "tests#submit",as: :submit
+        get "instructions" => "tests#new", as: :instructions 
+      end
+    end
+  end
+  root "papers#index"
 end

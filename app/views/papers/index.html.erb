@@ -1,0 +1,25 @@
+<%- model_class = Paper -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:number_of_questions) %></th>
+      <th><%= model_class.human_attribute_name(:duation) %></th>
+      <%if current_user.admin%>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @papers.each do |paper| %>
+      <tr>
+        <td><%= link_to paper.name, instructions_test_path(paper) %></td>
+        <td><%= paper.questions.count() %></td>
+        <td><%= format_time(paper.questions.sum(:duration))%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

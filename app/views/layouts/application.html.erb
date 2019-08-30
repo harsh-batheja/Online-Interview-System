@@ -10,15 +10,33 @@
     <%= javascript_include_tag "application" %>
   </head>
   <body>
-    <div class="navbar navbar-default navbar-static-top navbar-inverse" >
-      <div class="container">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-        </button>
-        <a class="navbar-brand" href="/">Interview</a>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
+    <%if !session[:test_id]%>
+      <div class="navbar navbar-default navbar-static-top" >
+        <div class="container">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+          </button>
+            <a class="navbar-brand" href="/">Interview</a>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+              <% if user_signed_in? %>
+                <% if current_user.admin%>
+                  <%=render "admin/navbar"%>
+                <%else%>
+                  <%=render "users/navbar"%>
+                <%end%>
+              <%else%>
+                <ul class="nav navbar-nav">
+                  <li>
+                    <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %>
+                  </li>
+                  <li>
+                    <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
+                  </li>
+                </ul>
+              <%end%>
+            </div>
         </div>
       </div>
-    </div>
+    <%end%>
     <!-- <div class="navbar">
     </div> -->
     <div class="container">

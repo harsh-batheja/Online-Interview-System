@@ -19,3 +19,21 @@
     <dd><%= @user.last_sign_in_ip %></dd>
   <%end%>
 </dl>
+<%if @user.tests !=[]%>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:paper) %></th>
+        <th><%= model_class.human_attribute_name(:attempts) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user.tests.map{|test| test.paper }.uniq.each do |paper| %>
+        <tr>
+          <td><%= link_to paper.name, admin_user_paper_tests_path(@user,paper) %></td>
+          <td><%= paper.user_tests(@user).count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<%end%>

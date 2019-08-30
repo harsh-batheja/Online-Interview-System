@@ -5,21 +5,20 @@ var option_undel = function (option){
 	$(option).parents()[0].style.display=""
 	$(option).children().eq(2).children().eq(0).val(false);;
 }
-
 var set_option_value = function(option,value){
 	$(option).children().find('.option-field').val(value);
 }
-
-var check_option = function(option){
-	
-}
-
 var lock_option = function(option){
 	$(option).find('.option-field').prop("disabled","disabled");
 }
-
 var unlock_option = function(option){
 	$(option).find('.option-field').removeAttr("disabled");
+}
+var unlock_button=function(button){
+  button.removeAttr("disabled");
+}
+var lock_button = function(button){
+  button.attr("disabled","disabled");
 }
 $(document).on('click', '.submit', function() {
 	$.each($(".option"), function(index, option){
@@ -37,11 +36,9 @@ $(document).on('click', '.check_box', function() {
 		$(this).prop("checked", true);
 	}
 })
-
 $(document).on('focusin', '.qtype', function(){
   $(this).data('val', $(this).val());
 })
-
 $(document).on('change', '.qtype', function(){
 	var button=$(this).parent().parent().parent().parent().parent().find('.add');
 	var prev = $(this).data('val');
@@ -53,7 +50,7 @@ $(document).on('change', '.qtype', function(){
   if(prev=='True False'){
   	unlock_option(options[0]);
   	unlock_option(options[1]);
-  	button.show();
+    unlock_button(button);
   }
   if(current=='True False'){
   	option_undel(options[0]);
@@ -62,7 +59,7 @@ $(document).on('change', '.qtype', function(){
   	set_option_value(options[1],"False");
   	lock_option(options[0]);
   	lock_option(options[1]);
-  	button.hide();
+  	lock_button(button);
   }
   if(current=='MCQ'||current=='MAQ'){
   	if(prev=='True False'){
@@ -77,27 +74,24 @@ $(document).on('change', '.qtype', function(){
   }
 	$(this).data('val',$(this).val());
 })
-
-$(".question").ready(function(){
-	$.each($(document).find('.option-field'),function(key,option){
-		var button=$(this).parent().parent().parent().parent().find('.add');
-		var qtype= $(this).parent().parent().parent().parent().find('.qtype').val();
-		if(qtype!="True False")
-			$(option).data('val',$(this).val());
-		else {
-			$(option).data('val',"");
-			button.hide();
-		}
-	})
-})
-
 $(document).on('change', '.option-field', function(){
 	current=$(this).parents('.fields').find('.qtype').eq(0).val();
 	if(current=="MAQ"||current=="MCQ"){
 		$(this).data('val',$(this).val());
 	}
 })
-
+$(".question").ready(function(){
+  $.each($(document).find('.option-field'),function(key,option){
+  var button=$(this).parent().parent().parent().parent().find('.add');
+  var qtype= $(this).parent().parent().parent().parent().find('.qtype').val();
+   if(qtype!="True False")
+    $(option).data('val',$(this).val());
+   else {
+    $(option).data('val',"");
+    button.hide();
+    }
+  })
+})
 $(document).on('nested:fieldAdded:questions', function(event){
 	var field = event.field;
 	var add=field.find(".add");

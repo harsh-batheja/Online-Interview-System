@@ -2,17 +2,14 @@ class Question < ApplicationRecord
 	belongs_to :paper
 	has_many :ans, dependent: :destroy, class_name: "Answer"
 	has_many :options, dependent: :destroy
-	accepts_nested_attributes_for :options, allow_destroy: true
-	before_save :finalize_question
+	accepts_nested_attributes_for :options, allow_destroy: true, reject_if: Proc.new{ |attr| attr['option'].blank? }
+
+	def user_answers(user)
+		ans.where(user:user)
+	end
 
 	def answers
 		options.where("is_correct = ?",true)
-	end
-
-	def finalize_question
-		if(self.qtype=="Fill in the Blank")
-			binding.pry
-		end
 	end
 
 	def hours

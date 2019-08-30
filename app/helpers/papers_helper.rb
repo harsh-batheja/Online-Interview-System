@@ -4,6 +4,6 @@ module PapersHelper
 	end
 
 	def q_types
-		["MCQ","MAQ","True False","Fill in the Blank"]
+		["MCQ","MAQ","True False"]
 	end
 end

@@ -1,14 +1,16 @@
 class Admin::PapersController < ApplicationController
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:results]
+
+  def results
+    @tests=@user.tests.where(paper_id:params[:id])
+  end
 
   def index
     @papers = Paper.all
   end
 
   def show
-    unless current_user.admin
-      redirect_to new_paper_test_path(@paper)
-    end
   end
 
   def new
@@ -22,11 +24,11 @@ class Admin::PapersController < ApplicationController
     @paper = Paper.new(paper_params)
     respond_to do |format|
       if @paper.save
-        format.html { redirect_to @paper, notice: 'Paper was successfully created.' }
-        format.json { render :show, status: :created, location: @paper }
+        format.html { redirect_to [:admin,@paper], notice: 'Paper was successfully created.' }
+        format.json { render :show, status: :created, location: [:admin,@paper] }
       else
         format.html { render :new }
-        format.json { render json: @paper.errors, status: :unprocessable_entity }
+        format.json { render json: [:admin,@paper].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -34,11 +36,11 @@ class Admin::PapersController < ApplicationController
   def update
     respond_to do |format|
       if @paper.update(paper_params)
-        format.html { redirect_to @paper, notice: 'Paper was successfully updated.' }
-        format.json { render :show, status: :ok, location: @paper }
+        format.html { redirect_to [:admin,@paper], notice: 'Paper was successfully updated.' }
+        format.json { render :show, status: :ok, location: [:admin,@paper] }
       else
         format.html { render :edit }
-        format.json { render json: @paper.errors, status: :unprocessable_entity }
+        format.json { render json:[:admin,@paper].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -52,6 +54,10 @@ class Admin::PapersController < ApplicationController
   end
 
   private
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
     def set_paper
       @paper = Paper.find(params[:id])
     end

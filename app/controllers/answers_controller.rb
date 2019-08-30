@@ -1,10 +1,10 @@
 class AnswersController < ApplicationController
-	before_action :set_test, only:[:new,:create]
+	before_action :set_test, only:[:new]
 	
 	def new
 		@questions=@test.questions.shuffle
    if @questions.empty?
-     redirect_to test_submit_path(@test)
+     redirect_to submit_test_path(@test)
      return 
    end
 		@answer=Answer.new
@@ -13,15 +13,15 @@ class AnswersController < ApplicationController
 		@answer.save
 	end
 
-	def create
-		answer=Answer.find_by(test_id: @test.id,question_id: answer_params[:question_id])
+	def update
+		answer=Answer.find(params[:id])
 		answer.update(answer_params)
-		redirect_to new_test_answer_path(@test)
+		redirect_to answer_path(answer.test)
 	end
 
 	private
 		def set_test
-			@test=Test.find(params[:test_id])
+			@test=Test.find(params[:id])
 		end
 
 		def answer_params

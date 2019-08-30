@@ -33,20 +33,12 @@
   <%= f.fields_for :options, :html => { :class => "form-horizontal" }%>
   <div class="form-group">
     <div class="col-lg-12">
-      <%= f.link_to_add "Add an Option", :options, :class => 'add btn btn-primary'%>
+      <%if f.object.qtype=="True False"%>
+        <%= f.link_to_add "Add an Option", :options,:disabled=>true, :class => 'add btn btn-primary'%>
+      <%else%>
+        <%= f.link_to_add "Add an Option", :options, :class => 'add btn btn-primary'%>
+      <%end%>
     </div>
   </div>
 </div>
 <br><br>
-<script type="text/javascript">
-  $(".question").ready(function(){
-  $.each($(".question"),function(key,question){
-    var qtype=$(this).children().find('.qtype').eq(0).val();
-    if(qtype=="True False"){
-      $.each($(this).find('.option'),function(key,option){
-        lock_option(option);
-      })
-    }
-  })
-})
-</script>
