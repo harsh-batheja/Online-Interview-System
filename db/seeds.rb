@@ -1,3 +1,5 @@
+u=User.create!(fname:"Admin",lname:"Admin",email:"admin@admin.com",admin:true,password:"123456")
+u.confirm
 p=Paper.new(name:'Science')
 q=p.questions.new(question:'Who is honoured as Father of Modern Chemistry?',qtype:'MCQ',correct: 1, incorrect: -1, unattempted: 0,duration:120)
 q.options.new(answer:'Antoine Lavoisier',is_correct:1)

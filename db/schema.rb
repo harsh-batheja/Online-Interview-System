@@ -12,7 +12,10 @@
 
 ActiveRecord::Schema.define(version: 2019_08_09_091659) do
 
-  create_table "answer_options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "answer_options", force: :cascade do |t|
     t.bigint "answer_id"
     t.bigint "option_id"
     t.datetime "created_at", null: false
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["option_id"], name: "index_answer_options_on_option_id"
   end
 
-  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "answers", force: :cascade do |t|
     t.bigint "test_id"
     t.bigint "question_id"
     t.text "answer"
@@ -31,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["test_id"], name: "index_answers_on_test_id"
   end
 
-  create_table "options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "options", force: :cascade do |t|
     t.string "answer"
     t.integer "position"
     t.boolean "is_correct"
@@ -41,13 +44,13 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 
-  create_table "papers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "papers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "questions", force: :cascade do |t|
     t.text "question"
     t.string "qtype"
     t.integer "duration", default: 0
@@ -60,7 +63,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["paper_id"], name: "index_questions_on_paper_id"
   end
 
-  create_table "tests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tests", force: :cascade do |t|
     t.bigint "paper_id"
     t.bigint "user_id"
     t.integer "marks", default: 0
@@ -70,7 +73,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_091659) do
     t.index ["user_id"], name: "index_tests_on_user_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "fname", default: "", null: false
     t.string "lname", default: "", null: false
     t.string "email", default: "", null: false
